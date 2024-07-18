@@ -1,12 +1,13 @@
-{% extends "base.html.twig" %}
+{% extends 'base.html.twig' %}
 
-{% block stylesheets %}
-<link rel="stylesheet" href={{asset('css/style.css')}}>
-<link rel="stylesheet" href={{asset('css/admin_article.css')}}>
+{% block title %}Hello CategoryController!
 {% endblock %}
 
 {% block body %}
-<main>
-<h1>Create New categories</h1>
-</main>
+	<h2>Ajouter une nouvelle categorie</h2>
+
+	{{ form_start(form)}}
+	{{ form_rest(form)}}
+	<input type="submit" value="Creer" class="btn btn-primary">
+	{{ form_end(form)}}
 {% endblock %}

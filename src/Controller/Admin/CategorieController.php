@@ -3,6 +3,7 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Categorie;
+use App\Form\CategorieCreateType;
 use App\Form\CategorieType;
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
@@ -25,25 +26,36 @@ class CategorieController extends AbstractController
     #[Route('/', name: 'index')]
     public function index(): Response
     {
-        
+        $categories=$this->em->getRepository(Categorie::class)->findAll();
+
+
         return $this->render('admin/categorie/index.html.twig', [
-            'controller_name' => 'CategorieController',
+            'controller_name' => 'CategorieController', 'categories' => $categories,
         ]);
     }
 
     #[Route('/create', name: 'create')]
-    public function create(EntityManagerInterface $em): Response
+    public function create( Request $request, EntityManagerInterface $em): Response
     {
-        $categorie = new  Categorie();
-        $categorie->setName('sucette')
-        ->setDescription('super')
-        ->setCreateAt(new DateTimeImmutable())
-        ->setUpdateAt(new DateTimeImmutable());
-        $em->persist($categorie);
-        $em->flush();
+        $categorie=new Categorie();
+        $form=$this->createForm(CategorieType::class, $categorie);
 
-        return $this->render('admin/categorie/create.html.twig');
-    }
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid()){
+          
+            $categorie->setCreateAt(new DateTimeImmutable());
+            $em->persist($categorie);
+            $em->flush();
+            
+            $this->addFlash('success', 'Categorie ajoutée avec succès');
+
+            return $this->redirectToRoute('admin_categorie_index');
+
+        }
+        return $this->render('admin/categorie/create.html.twig', ['form' => $form]);
+
+}
 
     #[Route('/update/{id}', name: 'update')]
     public function update($id, Categorie $categorie, Request $request): Response
@@ -54,16 +66,20 @@ class CategorieController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             
+            $categorie->setUpdateAt(new DateTimeImmutable());
+
             $this->em->flush();
-            $this->redirectToRoute('admin_categorie_index');
+           return $this->redirectToRoute('admin_categorie_index');
         }
+        return $this->render('admin/categorie/update.html.twig',
+    ['form' =>$form]);
+
     //      $categorie;
     //     $categorie->setName('sucette')
     // ->setDescription('super')
     // ->setCreateAt(new DateTimeImmutable());
     //     $this-> em->flush();
-        return $this->render('admin/categorie/update.html.twig',
-    ['form' =>$form]);
+    
     }
 
     #[Route('/delete/{id}', name: 'delete')]

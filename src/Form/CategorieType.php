@@ -15,16 +15,10 @@ class CategorieType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('name', TextType::class)
-            ->add('description')
-            ->add('createAt', null, [
-                'widget' => 'single_text',
-            ])
-            ->add('updateAt', null, [
-                'widget' => 'single_text',
-            ])
-            
-        ;
+            ->add('name', TextType::class, [ 'label' => 'Nom',
+            'required' => false,
+            'empty_data' => ''])
+            ->add('description');
     }
 
     public function configureOptions(OptionsResolver $resolver): void

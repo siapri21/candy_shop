@@ -4,7 +4,15 @@
 
 {% block body %}
 
+<table>
+{% for categorie in categories %}
+   <tr>
+    <td>{{categorie.name}}</td>
+     <td>{{categorie.description}}</td>
+      <td>{{categorie.UpdateAt |date('Y-m-d')}}</td>
+   </tr>
+</table>
 
-    <h1>Hello {{ controller_name }}! ✅</h1>
+{% endfor %}
 
 {% endblock %}
