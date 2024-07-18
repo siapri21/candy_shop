@@ -14,10 +14,6 @@ class CandyType extends AbstractType
         $builder
             ->add('name')
             ->add('description')
-            ->add('createAt', null, [
-                'widget' => 'single_text',
-            ])
-            ->add('slog')
         ;
     }
 

@@ -17,7 +17,7 @@ class Categorie
     #[ORM\Column(nullable: true)]
     private ?string $name = null;
 
-    #[ORM\Column(type: Types::TEXT)]
+    #[ORM\Column(Types::TEXT)]
     private ?string $description = null;
 
     #[ORM\Column(nullable: true)]

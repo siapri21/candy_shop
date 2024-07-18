@@ -20,11 +20,11 @@ class Candy
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $description = null;
 
-    #[ORM\Column( nullable: true)]
+    #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $createAt = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $slog = null;
+    #[ORM\Column(length: 255 ,nullable: true)]
+    private ?string $slug = null;
 
     public function getId(): ?int
     {
@@ -67,14 +67,14 @@ class Candy
         return $this;
     }
 
-    public function getSlog(): ?string
+    public function getSlug(): ?string
     {
-        return $this->slog;
+        return $this->slug;
     }
 
-    public function setSlog(string $slog): static
+    public function setSlug(string $slug): static
     {
-        $this->slog = $slog;
+        $this->slug = $slug;
 
         return $this;
     }

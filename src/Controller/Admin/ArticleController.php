@@ -12,12 +12,14 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\Requirement\Requirement;
+use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Config\Doctrine\Orm\EntityManagerConfig;
 
 #[Route('/admin/article', 'admin_article_')]
 class ArticleController extends AbstractController
 {
     private $em;
+
     public function __construct(EntityManagerInterface $em)
     {
         $this->em=$em;
@@ -29,31 +31,41 @@ class ArticleController extends AbstractController
     }
 
     #[Route('/create', name: 'create')]
-    public function create(Request $request ,EntityManagerInterface $em ):Response
+    public function create(Request $request ,EntityManagerInterface $em , SluggerInterface $sluggger ):Response
     {
         $candy= new Candy();
-       $form=$this->createForm(CandyType::class,$candy);
+       $form=$this->createForm(CandyType::class, $candy);
+
        $form->handleRequest($request);
+
        if($form->isSubmitted() && $form->isValid())
+
        {
-        $candy=$form->getData();
-        $candy->setCreatedAt(new DateTimeImmutable());
+         // Génère le slug à partir du nom du bonbon
+        $slug = $sluggger->slug($candy->getName()) -> lower();
+        $candy->setSlug($slug);
+
+        $candy->setCreateAt(new DateTimeImmutable());
+
         $em->persist($candy);
         $em->flush();
+
+        $this->addFlash('success', 'Categorie ajoutée avec succès');
+
         return $this->redirectToRoute('admin_article_index');
         }
 
 // $em->persist($candy); : La méthode persist prend un objet en argument (dans ce cas, $candy) et le marque comme "persistant" dans l'EntityManager. Cela signifie que l'objet est ajouté à la liste des objets à sauvegarder dans la base de données lors de la prochaine opération de flush.
 
 // $em->persist($candy); : La méthode persist prend un objet en argument (dans ce cas, $candy) et le marque comme "persistant" dans l'EntityManager. Cela signifie que l'objet est ajouté à la liste des objets à sauvegarder dans la base de données lors de la prochaine opération de flush.
-        $em->persist($candy);
+        
 
         // flush dit à Doctrine : "Ok, j'ai fini de préparer les objets à sauvegarder. Maintenant, écris-les dans la base de données."
-        $em->flush();
+       
 
-        dd($candy);
+      
 
-        return $this->render('admin/article/create.html.twig');
+        return $this->render('admin/article/create.html.twig', ['form'=> $form]);
     }
 
      #[Route('/update/{id}', name: 'update')]

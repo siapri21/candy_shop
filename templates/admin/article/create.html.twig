@@ -6,7 +6,15 @@
 {% endblock %}
 
 {% block body %}
-<main>
+
 <h1>Create New Article</h1>
-</main>
+
+{{form_start(form)}}
+
+{{form_rest(form)}}
+
+<input type="submit" value = "Envoyé" class="btn btn-primary">
+
+{{form_end(form)}}
+
 {% endblock %}
