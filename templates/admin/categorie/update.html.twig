@@ -1,0 +1,20 @@
+{% extends "base.html.twig" %}
+
+{% block stylesheets %}
+<link rel="stylesheet" href={{asset('css/style.css')}}>
+<link rel="stylesheet" href={{asset('css/admin_article.css')}}>
+{% endblock %}
+
+{% block body %}
+
+<h1>Update</h1>
+
+
+{{form_start(form)}}
+
+{{form_rest(form)}}
+
+<input type="submit" value = "mise à jour ">
+
+{{form_end(form)}}
+{% endblock %}
