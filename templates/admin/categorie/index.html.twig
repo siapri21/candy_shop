@@ -4,15 +4,38 @@
 
 {% block body %}
 
-<table>
+<h1>liste des catégories</h1>
+
+<table class='table table-striped m-9 auto table-info'>
+<tr>
+<th>Nom</th>
+<th>Description</th>
+<th>Date de création</th>
+<th>Modifier</th>
+<th>Supprimer</th>
+
+ <a href={{ path('admin_categorie_create')}} class="btn btn-success m-2">Ajouter</a>
+
+</tr>
 {% for categorie in categories %}
+
    <tr>
     <td>{{categorie.name}}</td>
-     <td>{{categorie.description}}</td>
-      <td>{{categorie.UpdateAt |date('Y-m-d')}}</td>
+	 <td>{{categorie.description}}</td>
+	 <td>{{categorie.createAt|date('d /m /Y')}}</td>
+    
+    <td>
+    <a href={{ path('admin_article_update', { id: categorie.id})}} class="btn btn-primary">Modifier</a>
+    </td>
+
+     <td>
+    <a href={{ path('admin_article_update', { id: categorie.id})}} class="btn btn-danger">Supprimer</a>
+    </td>
+
    </tr>
+{% endfor %}
+
 </table>
 
-{% endfor %}
 
 {% endblock %}

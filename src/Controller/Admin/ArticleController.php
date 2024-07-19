@@ -11,9 +11,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Routing\Requirement\Requirement;
 use Symfony\Component\String\Slugger\SluggerInterface;
-use Symfony\Config\Doctrine\Orm\EntityManagerConfig;
 
 #[Route('/admin/article', 'admin_article_')]
 class ArticleController extends AbstractController
@@ -24,10 +22,13 @@ class ArticleController extends AbstractController
     {
         $this->em=$em;
     } 
+
     #[Route('/', name: 'index')]
     public function index():Response
     {
-        return $this->render('admin/article/index.html.twig');
+        $candies=$this->em->getRepository(Candy::class)->findAll();
+
+        return $this->render('admin/article/index.html.twig',['candies' => $candies]);
     }
 
     #[Route('/create', name: 'create')]
@@ -69,9 +70,20 @@ class ArticleController extends AbstractController
     }
 
      #[Route('/update/{id}', name: 'update')]
-    public function update($id, CandyRepository $repository, EntityManagerInterface $em):Response
+    public function update($id, Candy $candy ,Request $request):Response
     {
-        
+        $form=$this->createForm(CandyType::class, $candy);
+        $form->handleRequest($request);
+        if($form->isSubmitted() && $form->isValid())
+        {
+            $this->em->flush();
+
+            $this->addFlash('success', 'Categorie modifiée avec succès');
+
+
+            return $this->redirectToRoute('admin_article_index',[]);
+
+        }
         // find() permet de recuperer un enregistrement de la base de données grâce à son id
         // $candy = $repository->find(1);
 
@@ -82,15 +94,8 @@ class ArticleController extends AbstractController
         // $candy = $repository->findBy(['name' => 'fraise']);
 
         //  findBy() permet de recuperer un enregistrement de la base de données correspondant à des conditions sur les champs
-        $candy = $repository->findOneBy([
-            'slug' => 'fraise',
-            'name' => 'fraise'
-        ]);
-        $candy = $repository->find($id);
-        $candy -> setName('fraise');
-        $em->flush();
-
-        return $this->render('admin/article/update.html.twig');
+      
+        return $this->render('admin/article/update.html.twig', ['form'=>$form]);
     }
 
     #[Route('/delete/{id}', name: 'delete')]

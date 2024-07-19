@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\CandyRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: CandyRepository::class)]
 class Candy
@@ -12,10 +13,12 @@ class Candy
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+
     private ?int $id = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    private ?string $name = null;
+    #[Assert\Length(min: 10, minMessage: 'hdffoile')]
+    private ?string $name = '';
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $description = null;
@@ -25,6 +28,9 @@ class Candy
 
     #[ORM\Column(length: 255 ,nullable: true)]
     private ?string $slug = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?\DateTimeImmutable $UpdateAt = null;
 
     public function getId(): ?int
     {
@@ -75,6 +81,18 @@ class Candy
     public function setSlug(string $slug): static
     {
         $this->slug = $slug;
+
+        return $this;
+    }
+
+    public function getUpdateAt(): ?\DateTimeImmutable
+    {
+        return $this->UpdateAt;
+    }
+
+    public function setUpdateAt(\DateTimeImmutable $UpdateAt): static
+    {
+        $this->UpdateAt = $UpdateAt;
 
         return $this;
     }
