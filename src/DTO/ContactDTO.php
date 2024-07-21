@@ -6,15 +6,32 @@ use Symfony\Component\Validator\Constraints as Assert;
 class ContactDTO
 {
     /**
-     * @Assert\NotBlank(message="L'adresse email ne doit pas être vide.")
-     * @Assert\Email(message="Veuillez entrer une adresse email valide.")
+     * @Assert\NotBlank()
+     */
+    private $name;
+
+    /**
+     * @Assert\NotBlank()
+     * @Assert\Email()
      */
     private $email;
 
     /**
-     * @Assert\NotBlank(message="Le message ne doit pas être vide.")
+     * @Assert\NotBlank()
      */
     private $message;
+
+    // Getters and setters
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    public function setName(string $name): self
+    {
+        $this->name = $name;
+        return $this;
+    }
 
     public function getEmail(): ?string
     {
@@ -24,7 +41,6 @@ class ContactDTO
     public function setEmail(string $email): self
     {
         $this->email = $email;
-
         return $this;
     }
 
@@ -36,7 +52,6 @@ class ContactDTO
     public function setMessage(string $message): self
     {
         $this->message = $message;
-
         return $this;
     }
 }

@@ -1,14 +1,14 @@
-{% extends "base.html.twig" %}
-{% block title %}Home Page
-{% endblock %}
-{% block stylesheets %}
-	<link rel="stylesheet" href={{asset('css/style.css')}}>
-{% endblock %}
+{% extends 'base.html.twig' %}
+
+{% block title %}Contact Form{% endblock %}
 
 {% block body %}
-	<main>
-		<h1>I'll take you to my
-			<span>Candy Shop</span>
-			!</h1>
-	</main>
+    <h1>Contact Form</h1>
+
+    {{ form_start(form) }}
+        {{ form_row(form.name) }}
+        {{ form_row(form.email) }}
+        {{ form_row(form.message) }}
+     <input type="submit" value="Envoyé" class="btn btn-primary" >
+    {{ form_end(form) }}
 {% endblock %}

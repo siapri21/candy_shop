@@ -7,13 +7,11 @@
             Candy
           </a>
           <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="#">Action</a></li>
-            <li><a class="dropdown-item" href="#">Another action</a></li>
-            <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item" href="#">Something else here</a></li>
+            <li><a class="dropdown-item" href={{path('admin_article_index')}}>Bonbons</a></li>
+            <li><a class="dropdown-item" href={{path('admin_categorie_index')}}>Catégories</a></li>
           </ul>
         </li>
-		<a href="">Contact</a>
+		<a href="{{path('front_contact_form')}}">Contact</a>
 		 <form class="d-flex" role="search">
         <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
         <button class="btn btn-outline-success" type="submit">Search</button>
