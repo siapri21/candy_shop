@@ -21,6 +21,11 @@ class ContactDTO
      */
     private $message;
 
+      /**
+     * @Assert\NotBlank()
+     */
+    private $service;
+
     // Getters and setters
     public function getName(): ?string
     {
@@ -52,6 +57,17 @@ class ContactDTO
     public function setMessage(string $message): self
     {
         $this->message = $message;
+        return $this;
+    }
+
+    public function getService(): ?string
+    {
+        return $this->service;
+    }
+
+    public function setService(string $service): self
+    {
+        $this->service = $service;
         return $this;
     }
 }

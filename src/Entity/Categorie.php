@@ -23,6 +23,13 @@ class Categorie
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $createAt = null;
 
+    // c'est une attribut qui  decleche la fonction avant que la fonction persister
+    #[ORM\PrePersist]
+    public function prePersist()
+    {
+        $this->createAt = new \DateTimeImmutable();
+    }
+
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $updateAt = null;
 
